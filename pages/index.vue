@@ -94,7 +94,6 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, onBeforeUnmount } from 'vue';
 import useGame from '@/composables/useGame';
 
 const {

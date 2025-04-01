@@ -30,7 +30,7 @@ const close = () => {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(19, 19, 19, 0.99);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -42,8 +42,9 @@ const close = () => {
   padding: 30px;
   border-radius: 10px;
   text-align: center;
-  max-width: 400px;
+  max-width: 500px;
   width: 90%;
+
 }
 
 .player-info {
@@ -61,6 +62,8 @@ button {
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s;
+
+  max-width: 60%;
 }
 
 button:hover {
