@@ -12,7 +12,7 @@
             :key="y"
             class="cell"
             :class="[
-            cell,
+            getCellClass(cell, x, y),
             {
               'preview': showPreview && isPreviewCell(x, y),
               'invalid-preview': showPreview && isPreviewCell(x, y) && !canPlacePreview
@@ -127,6 +127,14 @@ const handleCellClick = (x: number, y: number) => {
 const handleCellHover = (x: number, y: number) => {
   hoverPosition.value = { x, y };
   emit('cell-hover', { x, y });
+};
+
+// Get cell class
+const getCellClass = (cell: CellState, x: number, y: number): string => {
+  if (cell === 'ship' && !props.showShips) {
+    return 'empty'; // Hide ships if showShips is false
+  }
+  return cell;
 };
 </script>
 

@@ -62,7 +62,8 @@
             :game-phase="gamePhase"
             :active-player="activePlayer"
             :is-active="true"
-            @cell-click="handleBattleClick"
+            :show-ships="false"
+        @cell-click="handleBattleClick"
         />
 
         <GameBoard
