@@ -185,7 +185,7 @@ export default function useGame() {
         if (opponentBoard[x][y] === 'ship') {
             opponentBoard[x][y] = 'hit';
             return 'hit';
-        } else if (opponentBoard[x][y] === 'empty') {
+        } else if (opponentBoard[x][y] === 'empty' || opponentBoard[x][y] === 'forbidden') {
             opponentBoard[x][y] = 'miss';
             return 'miss';
         }
