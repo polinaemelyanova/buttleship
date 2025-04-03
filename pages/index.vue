@@ -189,7 +189,7 @@ onBeforeUnmount(() => {
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .game-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -197,7 +197,9 @@ onBeforeUnmount(() => {
   text-align: center;
 }
 
-.setup-phase, .battle-phase, .gameover-phase {
+.setup-phase,
+.battle-phase,
+.gameover-phase {
   margin-top: 20px;
 }
 
@@ -213,21 +215,15 @@ onBeforeUnmount(() => {
   justify-content: center;
   gap: 20px;
   margin: 15px 0;
+
+  label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
 }
 
-.player-controls label {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.setup-content {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  flex-wrap: wrap;
-}
-
+.setup-content,
 .boards-container {
   display: flex;
   justify-content: center;
@@ -253,38 +249,41 @@ button {
 .btn-start {
   background-color: #4CAF50;
   color: white;
-}
 
-.btn-start:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
-}
+  &:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
 
-.btn-start:not(:disabled):hover {
-  background-color: #45a049;
+  &:not(:disabled):hover {
+    background-color: #45a049;
+  }
 }
 
 .btn-restart {
   background-color: #2196F3;
   color: white;
   margin-top: 20px;
+
+  &:hover {
+    background-color: #0b7dda;
+  }
 }
 
-.btn-restart:hover {
-  background-color: #0b7dda;
+input[type="text"],
+input[type="color"] {
+  border: 1px solid #ddd;
+  border-radius: 4px;
 }
 
 input[type="text"] {
   padding: 5px 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
 }
 
 input[type="color"] {
   width: 30px;
   height: 30px;
   padding: 0;
-  border: 1px solid #ddd;
-  border-radius: 4px;
 }
+
 </style>

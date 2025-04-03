@@ -138,9 +138,11 @@ const getCellClass = (cell: CellState, x: number, y: number): string => {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+
 .game-board {
   margin: 20px;
+  --player-color-rgb: 33, 150, 243; // По умолчанию синий
 }
 
 .grid {
@@ -163,45 +165,38 @@ const getCellClass = (cell: CellState, x: number, y: number): string => {
   justify-content: center;
   cursor: pointer;
   position: relative;
-}
 
-.cell.ship {
-  background-color: var(--player-color);
-}
+  &.ship {
+    background-color: var(--player-color);
+  }
 
-.cell.hit {
-  background-color: #f00;
-}
+  &.hit {
+    background-color: #f00;
+    span {
+      color: white;
+      font-size: 18px;
+    }
+  }
 
-.cell.hit span {
-  color: white;
-  font-size: 18px;
-}
+  &.miss {
+    background-color: #aaa;
+    span {
+      color: #333;
+      font-size: 20px;
+    }
+  }
 
-.cell.miss {
-  background-color: #aaa;
-}
+  &.forbidden {
+    background-color: #f5f5f5;
+  }
 
-.cell.miss span {
-  color: #333;
-  font-size: 20px;
-}
+  &.preview {
+    background-color: rgba(var(--player-color-rgb), 0.5);
+    z-index: 2;
+  }
 
-.cell.forbidden {
-  background-color: #f5f5f5;
-}
-
-.cell.preview {
-  background-color: rgba(var(--player-color-rgb), 0.5);
-  z-index: 2;
-}
-
-.cell.invalid-preview {
-  background-color: rgba(255, 0, 0, 0.5);
-}
-
-/* Добавим переменную для RGB цвета игрока */
-.game-board {
-  --player-color-rgb: 33, 150, 243; /* По умолчанию синий */
+  &.invalid-preview {
+    background-color: rgba(255, 0, 0, 0.5);
+  }
 }
 </style>

@@ -47,7 +47,7 @@ const selectShip = (ship: ShipType) => {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .ship-list {
   margin: 20px;
   padding: 10px;
@@ -63,20 +63,20 @@ const selectShip = (ship: ShipType) => {
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.2s;
-}
 
-.ship-item:hover {
-  background-color: #f5f5f5;
-}
+  &:hover {
+    background-color: #f5f5f5;
+  }
 
-.ship-item.selected {
-  border-color: var(--player-color);
-  background-color: rgba(var(--player-color-rgb), 0.1);
-}
+  &.selected {
+    border-color: var(--player-color);
+    background-color: rgba(var(--player-color-rgb), 0.1);
+  }
 
-.ship-item.disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
 
 .ship-info {
@@ -90,9 +90,10 @@ const selectShip = (ship: ShipType) => {
   height: 20px;
   border-radius: 3px;
   transition: all 0.2s;
+
+  .ship-item.selected & {
+    box-shadow: 0 0 0 2px var(--player-color);
+  }
 }
 
-.ship-item.selected .ship-preview {
-  box-shadow: 0 0 0 2px var(--player-color);
-}
 </style>

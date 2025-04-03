@@ -23,7 +23,7 @@ const close = () => {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .turn-popup {
   position: fixed;
   top: 0;
@@ -35,38 +35,36 @@ const close = () => {
   justify-content: center;
   align-items: center;
   z-index: 1000;
-}
 
-.popup-content {
-  background-color: white;
-  padding: 30px;
-  border-radius: 10px;
-  text-align: center;
-  max-width: 500px;
-  width: 90%;
+  .popup-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+  }
 
-}
+  .player-info {
+    font-size: 24px;
+    margin: 20px 0;
+    font-weight: bold;
+  }
 
-.player-info {
-  font-size: 24px;
-  margin: 20px 0;
-  font-weight: bold;
-}
+  button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    max-width: 60%;
 
-button {
-  padding: 10px 20px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-
-  max-width: 60%;
-}
-
-button:hover {
-  background-color: #45a049;
+    &:hover {
+      background-color: #45a049;
+    }
+  }
 }
 </style>
