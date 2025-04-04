@@ -30,7 +30,6 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
 import type { CellState, Position, ShipType } from '@/types/game';
 
 const props = withDefaults(defineProps<{
