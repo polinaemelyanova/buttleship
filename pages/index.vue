@@ -55,6 +55,7 @@
     <!-- Фаза боя -->
     <div v-else-if="gamePhase === 'battle'" class="battle-phase">
       <div class="boards-container">
+
         <GameBoard
             :board="inactivePlayer.id === 1 ? player1Board : player2Board"
             :board-size="BOARD_SIZE"
@@ -63,8 +64,11 @@
             :active-player="activePlayer"
             :is-active="true"
             :show-ships="false"
-        @cell-click="handleBattleClick"
+            :current-ship="null"
+            :is-vertical="false"
+            @cell-click="handleBattleClick"
         />
+
 
         <GameBoard
             :board="activePlayer.id === 1 ? player1Board : player2Board"
@@ -74,7 +78,10 @@
             :active-player="activePlayer"
             :is-active="false"
             :show-ships="true"
+            :current-ship="null"
+            :is-vertical="false"
         />
+
       </div>
     </div>
 

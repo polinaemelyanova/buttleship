@@ -11,10 +11,12 @@
 </template>
 
 <script lang="ts" setup>
-defineProps({
-  show: Boolean,
-  player: Object
-});
+import type { Player } from '@/types/game';
+
+const props = defineProps<{
+  show: boolean;
+  player: Player;
+}>();
 
 const emit = defineEmits(['close']);
 

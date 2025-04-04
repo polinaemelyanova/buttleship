@@ -31,24 +31,20 @@
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
-import type { CellState, Position } from '@/types/game';
+import type { CellState, Position, ShipType } from '@/types/game';
 
-const props = defineProps({
-  board: {
-    type: Array as () => CellState[][],
-    required: true
-  },
-  boardSize: {
-    type: Number,
-    default: 10
-  },
-  title: String,
-  gamePhase: String,
-  currentShip: Object,
-  isVertical: Boolean,
-  activePlayer: Object,
-  isActive: Boolean,
-  showShips: Boolean
+const props = withDefaults(defineProps<{
+  board: CellState[][]
+  boardSize?: number
+  title: string
+  gamePhase: string
+  currentShip: ShipType | null
+  isVertical: boolean
+  activePlayer: any
+  isActive: boolean
+  showShips: boolean
+}>(), {
+  boardSize: 10
 });
 
 const emit = defineEmits(['cell-click', 'cell-hover']);

@@ -29,14 +29,11 @@
 <script lang="ts" setup>
 import type { ShipType } from '@/types/game';
 
-const props = defineProps({
-  ships: {
-    type: Array as () => ShipType[],
-    required: true
-  },
-  currentShip: Object,
-  gamePhase: String
-});
+const props = defineProps<{
+  ships: ShipType[]
+  currentShip: ShipType | null
+  gamePhase: string
+}>();
 
 const emit = defineEmits(['select-ship']);
 
