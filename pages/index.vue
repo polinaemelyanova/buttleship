@@ -196,7 +196,13 @@ onBeforeUnmount(() => {
 });
 </script>
 
+
 <style lang="scss" scoped>
+
+* {
+  font-family: 'Lora', sans-serif;
+}
+
 .game-container {
   max-width: 1200px;
   margin: 0 auto;
