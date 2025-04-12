@@ -1,6 +1,24 @@
 <template>
   <div class="game-board" :style="{'--player-color': activePlayer.color}">
     <h3>{{ title }}</h3>
+
+    <!-- Буквы колонок сверху -->
+    <div class="column-letters">
+      <div v-for="col in boardSize" :key="'col-' + col" class="coordinate">
+        {{ getColumnLetter(col - 1) }}
+      </div>
+    </div>
+
+    <div class="grid-with-numbers">
+      <!-- Цифры строк слева -->
+      <div class="row-numbers">
+        <div v-for="row in boardSize" :key="'row-' + row" class="coordinate">
+          {{ row }}
+        </div>
+      </div>
+
+
+
     <div class="grid" :style="{'--size': boardSize}">
       <div
           v-for="(row, x) in board"
@@ -26,6 +44,7 @@
         </div>
       </div>
     </div>
+    </div>
   </div>
 </template>
 
@@ -45,6 +64,13 @@ const props = withDefaults(defineProps<{
 }>(), {
   boardSize: 10
 });
+
+// В разделе <script> добавим эту функцию
+const getColumnLetter = (index: number): string => {
+  // Русский алфавит без буквы Ё
+  const russianLetters = 'абвгдежзик';
+  return russianLetters[index] || '';
+};
 
 const emit = defineEmits(['cell-click', 'cell-hover']);
 
@@ -137,7 +163,40 @@ const getCellClass = (cell: CellState, x: number, y: number): string => {
 
 .game-board {
   margin: 20px;
-  --player-color-rgb: 33, 150, 243; // По умолчанию синий
+  --player-color-rgb: 33, 150, 243;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.column-letters {
+  display: flex;
+  margin-left: 30px; // Отступ для цифр слева
+  margin-bottom: 5px;
+
+  .coordinate {
+    width: 30px;
+    text-align: center;
+    font-weight: bold;
+  }
+}
+
+.grid-with-numbers {
+  display: flex;
+}
+
+.row-numbers {
+  display: flex;
+  flex-direction: column;
+  margin-right: 5px;
+
+  .coordinate {
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+  }
 }
 
 .grid {
