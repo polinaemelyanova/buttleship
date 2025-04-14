@@ -30,17 +30,18 @@
             :key="y"
             class="cell"
             :class="[
-            getCellClass(cell, x, y),
-            {
-              'preview': showPreview && isPreviewCell(x, y),
-              'invalid-preview': showPreview && isPreviewCell(x, y) && !canPlacePreview
-            }
-          ]"
+        getCellClass(cell, x, y),
+        {
+          'preview': showPreview && isPreviewCell(x, y),
+          'invalid-preview': showPreview && isPreviewCell(x, y) && !canPlacePreview
+        }
+      ]"
             @click="handleCellClick(x, y)"
             @mouseover="handleCellHover(x, y)"
         >
           <span v-if="cell === 'hit'">✖</span>
           <span v-else-if="cell === 'miss'">•</span>
+          <span v-else-if="cell === 'sunk'">☠</span>
         </div>
       </div>
     </div>
@@ -229,6 +230,15 @@ const getCellClass = (cell: CellState, x: number, y: number): string => {
     span {
       color: white;
       font-size: 18px;
+    }
+  }
+
+  &.sunk {
+    background-color: #900;
+    span {
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
     }
   }
 

@@ -4,7 +4,8 @@ export type CellState =
     | 'ship'     // Корабль
     | 'hit'      // Попадание
     | 'miss'     // Промах
-    | 'forbidden'; // Запрещенная для размещения
+    | 'forbidden' // Запрещенная для размещения
+    | 'sunk';    // Уничтоженный корабль
 
 // Тип корабля
 export interface ShipType {

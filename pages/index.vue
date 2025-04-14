@@ -141,6 +141,7 @@ const handleBattleClick = ({ x, y }: { x: number, y: number }) => {
       else if (result === 'miss') {
         switchTurn();
       }
+      // При уничтожении корабля не меняем ход
     }
   }
 };

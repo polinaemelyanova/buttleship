@@ -178,18 +178,106 @@ export default function useGame() {
         }
     };
 
-    // Выстрел по полю противника
-    const makeShot = (x: number, y: number): 'hit' | 'miss' | null => {
+    // Проверка уничтожения корабля
+    const checkShipSunk = (x: number, y: number, board: CellState[][]): boolean => {
+        // Проверяем все части корабля
+        const visited = new Set<string>();
+        const queue = [[x, y]];
+
+        while (queue.length > 0) {
+            const [cx, cy] = queue.pop()!;
+            const key = `${cx},${cy}`;
+
+            if (visited.has(key)) continue;
+            visited.add(key);
+
+            // Если есть неподбитая часть корабля - он не уничтожен
+            if (board[cx][cy] === 'ship') return false;
+
+            // Добавляем соседние клетки корабля
+            for (const [dx, dy] of [[0,1],[1,0],[0,-1],[-1,0]]) {
+                const nx = cx + dx;
+                const ny = cy + dy;
+                if (nx >= 0 && nx < BOARD_SIZE && ny >= 0 && ny < BOARD_SIZE) {
+                    if (board[nx][ny] === 'ship' || board[nx][ny] === 'hit') {
+                        queue.push([nx, ny]);
+                    }
+                }
+            }
+        }
+
+        return true;
+    };
+
+// Выстрел по полю противника
+    const makeShot = (x: number, y: number): 'hit' | 'miss' | 'sunk' | null => {
         const opponentBoard = inactivePlayer.value.id === 1 ? player1Board.value : player2Board.value;
 
         if (opponentBoard[x][y] === 'ship') {
             opponentBoard[x][y] = 'hit';
+
+            // Проверяем, уничтожен ли корабль
+            if (checkShipSunk(x, y, opponentBoard)) {
+                markSunkShip(x, y, opponentBoard);
+                return 'sunk';
+            }
             return 'hit';
         } else if (opponentBoard[x][y] === 'empty' || opponentBoard[x][y] === 'forbidden') {
             opponentBoard[x][y] = 'miss';
             return 'miss';
         }
         return null;
+    };
+
+// Новая функция для пометки уничтоженного корабля и клеток вокруг
+    const markSunkShip = (x: number, y: number, board: CellState[][]) => {
+        const visited = new Set<string>();
+        const queue = [[x, y]];
+        const sunkCells: [number, number][] = [];
+
+        // Находим все клетки корабля
+        while (queue.length > 0) {
+            const [cx, cy] = queue.pop()!;
+            const key = `${cx},${cy}`;
+
+            if (visited.has(key)) continue;
+            visited.add(key);
+
+            if (board[cx][cy] === 'hit') {
+                sunkCells.push([cx, cy]);
+
+                // Ищем соседние клетки корабля
+                for (const [dx, dy] of [[0,1],[1,0],[0,-1],[-1,0]]) {
+                    const nx = cx + dx;
+                    const ny = cy + dy;
+                    if (nx >= 0 && nx < BOARD_SIZE && ny >= 0 && ny < BOARD_SIZE) {
+                        if (board[nx][ny] === 'hit') {
+                            queue.push([nx, ny]);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Помечаем клетки корабля как уничтоженные
+        sunkCells.forEach(([cx, cy]) => {
+            board[cx][cy] = 'sunk';
+        });
+
+        // Помечаем клетки вокруг корабля как промахи
+        sunkCells.forEach(([cx, cy]) => {
+            for (let dx = -1; dx <= 1; dx++) {
+                for (let dy = -1; dy <= 1; dy++) {
+                    const nx = cx + dx;
+                    const ny = cy + dy;
+                    if (nx >= 0 && nx < BOARD_SIZE && ny >= 0 && ny < BOARD_SIZE) {
+                        if (board[nx][ny] === 'empty' || board[nx][ny] === 'forbidden') {
+                            board[nx][ny] = 'miss';
+                        }
+                    }
+                }
+            }
+        });
     };
 
     // Проверка победы
