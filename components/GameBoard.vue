@@ -66,9 +66,8 @@ const props = withDefaults(defineProps<{
   boardSize: 10
 });
 
-// В разделе <script> добавим эту функцию
 const getColumnLetter = (index: number): string => {
-  // Русский алфавит без буквы Ё
+  // Русский алфавит
   const russianLetters = 'абвгдежзик';
   return russianLetters[index] || '';
 };
@@ -107,7 +106,7 @@ const canPlacePreview = computed(() => {
   return canPlaceShip(x, y, props.currentShip.length, props.isVertical, props.board);
 });
 
-// Проверка возможности размещения (аналогично useGame)
+// Проверка возможности размещения
 const canPlaceShip = (
     x: number,
     y: number,
@@ -151,10 +150,10 @@ const handleCellHover = (x: number, y: number) => {
   emit('cell-hover', { x, y });
 };
 
-// Get cell class
+// Получение класса ячейки
 const getCellClass = (cell: CellState, x: number, y: number): string => {
   if (cell === 'ship' && !props.showShips) {
-    return 'empty'; // Hide ships if showShips is false
+    return 'empty'; // Скрыть корабли если showShips равно false
   }
   return cell;
 };

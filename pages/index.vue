@@ -2,6 +2,10 @@
   <div class="game-container">
     <h1>Морской бой</h1>
 
+    <div class="hit-notification" v-if="showHitNotification">
+      Попадание!
+    </div>
+
     <!-- Фаза расстановки кораблей -->
     <SetupPhase
         v-if="gamePhase === 'setup'"
@@ -35,6 +39,7 @@
             :current-ship="null"
             :is-vertical="false"
             @cell-click="handleBattleClick"
+            :class="{ disabled: isBoardLocked }"
         />
 
         <GameBoard
@@ -49,6 +54,10 @@
             :is-vertical="false"
         />
 
+      </div>
+
+      <div v-if="showEndTurn">
+      <button class="" @click="endTurn">Завершить ход</button>
       </div>
     </div>
 
@@ -89,6 +98,9 @@ const {
   currentShip,
   isVertical,
   canStartGame,
+  showEndTurn,
+  isBoardLocked,
+  showHitNotification,
 
   // Игроки
   activePlayer,
@@ -103,7 +115,8 @@ const {
   makeShot,
   checkWin,
   switchTurn,
-  closeTurnPopup
+  closeTurnPopup,
+  endTurn
 } = useGame();
 
 // Обработка клика по клетке в фазе расстановки
@@ -139,7 +152,8 @@ const handleBattleClick = ({ x, y }: { x: number, y: number }) => {
       }
       // Смена хода при промахе
       else if (result === 'miss') {
-        switchTurn();
+        showEndTurn.value = true;
+        isBoardLocked.value = true;
       }
       // При уничтожении корабля не меняем ход
     }
@@ -224,5 +238,23 @@ input[type="color"] {
   width: 30px;
   height: 30px;
   padding: 0;
+}
+
+.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.hit-notification {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #f44336;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  z-index: 100;
+  animation: fade 2s;
 }
 </style>

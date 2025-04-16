@@ -23,6 +23,15 @@ export default function useGame() {
     // Показать попап смены хода
     const showTurnPopup = ref(false);
 
+    // Блокировка поля
+    const isBoardLocked = ref(false);
+
+    // Отображение кнопки завершения хода
+    const showEndTurn = ref(false);
+
+    // Уведомление попадания
+    const showHitNotification = ref(false);
+
     // Победитель
     const winner = ref<Player | null>(null);
 
@@ -216,6 +225,9 @@ export default function useGame() {
         if (opponentBoard[x][y] === 'ship') {
             opponentBoard[x][y] = 'hit';
 
+            showHitNotification.value = true;
+            setTimeout(() => showHitNotification.value = false, 2000);
+
             // Проверяем, уничтожен ли корабль
             if (checkShipSunk(x, y, opponentBoard)) {
                 markSunkShip(x, y, opponentBoard);
@@ -229,7 +241,7 @@ export default function useGame() {
         return null;
     };
 
-// Новая функция для пометки уничтоженного корабля и клеток вокруг
+// Функция для пометки уничтоженного корабля и клеток вокруг
     const markSunkShip = (x: number, y: number, board: CellState[][]) => {
         const visited = new Set<string>();
         const queue = [[x, y]];
@@ -285,6 +297,12 @@ export default function useGame() {
         return !board.flat().some(cell => cell === 'ship');
     };
 
+    // Кнопка завершить ход при промахе
+    const endTurn = () => {
+        showTurnPopup.value = true;
+        switchTurn()
+    }
+
     // Смена активного игрока
     const switchTurn = () => {
         players.value.forEach(player => {
@@ -292,14 +310,18 @@ export default function useGame() {
         });
 
         if (gamePhase.value === 'battle') {
-            showTurnPopup.value = true;
+            showEndTurn.value = false;
         }
+
+        isBoardLocked.value = false; // <<< разблокировка поля
     };
+
 
     // Закрытие попапа смены хода
     const closeTurnPopup = () => {
         showTurnPopup.value = false;
     };
+
 
     // Активный и неактивный игроки (вычисляемые свойства)
     const activePlayer = computed(() => players.value.find(p => p.isActive)!);
@@ -325,6 +347,9 @@ export default function useGame() {
         currentShip,
         isVertical,
         canStartGame,
+        showEndTurn,
+        isBoardLocked,
+        showHitNotification,
 
         // Игроки
         activePlayer,
@@ -339,6 +364,7 @@ export default function useGame() {
         makeShot,
         checkWin,
         switchTurn,
-        closeTurnPopup
+        closeTurnPopup,
+        endTurn
     };
 }
