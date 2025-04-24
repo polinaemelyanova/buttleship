@@ -327,6 +327,64 @@ export default function useGame() {
     const activePlayer = computed(() => players.value.find(p => p.isActive)!);
     const inactivePlayer = computed(() => players.value.find(p => !p.isActive)!);
 
+
+
+    const getRemainingEnemyShips = computed(() => {
+        const opponentBoard = inactivePlayer.value.id === 1 ? player1Board.value : player2Board.value;
+        const shipTypes: ShipType[] = JSON.parse(JSON.stringify(SHIP_TYPES));
+
+        // 1. Находим все НЕУНИЧТОЖЕННЫЕ корабли (хотя бы одна клетка 'ship')
+        const findAliveShips = (board: CellState[][]) => {
+            const visited = new Set<string>();
+            const ships: { length: number }[] = [];
+
+            for (let x = 0; x < BOARD_SIZE; x++) {
+                for (let y = 0; y < BOARD_SIZE; y++) {
+                    if (board[x][y] === 'ship' && !visited.has(`${x},${y}`)) {
+                        // Находим все клетки корабля (включая подбитые)
+                        const queue = [[x, y]];
+                        let shipLength = 0;
+
+                        while (queue.length > 0) {
+                            const [cx, cy] = queue.pop()!;
+                            const key = `${cx},${cy}`;
+
+                            if (visited.has(key)) continue;
+                            visited.add(key);
+                            shipLength++;
+
+                            // Ищем соседей (горизонтально/вертикально)
+                            for (const [dx, dy] of [[0, 1], [1, 0], [0, -1], [-1, 0]]) {
+                                const nx = cx + dx;
+                                const ny = cy + dy;
+                                if (
+                                    nx >= 0 && nx < BOARD_SIZE &&
+                                    ny >= 0 && ny < BOARD_SIZE &&
+                                    (board[nx][ny] === 'ship' || board[nx][ny] === 'hit')
+                                ) {
+                                    queue.push([nx, ny]);
+                                }
+                            }
+                        }
+                        ships.push({ length: shipLength });
+                    }
+                }
+            }
+            return ships;
+        };
+
+        const aliveShips = findAliveShips(opponentBoard);
+
+        // 2. Сопоставляем с типами кораблей
+        return shipTypes.map((shipType) => {
+            const aliveCount = aliveShips.filter(ship => ship.length === shipType.length).length;
+            return {
+                ...shipType,
+                remaining: aliveCount, // Все корабли, у которых осталась хоть одна целая клетка
+            };
+        }).filter(ship => ship.remaining > 0); // Показываем только неуничтоженные
+    });
+
     // Инициализация игры при первом запуске
     initGame();
 
@@ -350,6 +408,7 @@ export default function useGame() {
         showEndTurn,
         isBoardLocked,
         showHitNotification,
+        getRemainingEnemyShips,
 
         // Игроки
         activePlayer,

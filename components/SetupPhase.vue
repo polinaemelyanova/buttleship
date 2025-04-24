@@ -50,9 +50,6 @@
 </template>
 
 <script lang="ts" setup>
-import ShipList from '@/components/ShipList.vue';
-import GameBoard from '@/components/GameBoard.vue';
-import type { Ref } from 'vue';
 import type { Player, ShipType, CellState, GamePhase } from '@/types/game';
 
 const props = defineProps<{

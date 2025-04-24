@@ -166,18 +166,20 @@ const getCellClass = (cell: CellState, x: number, y: number): string => {
   --player-color-rgb: 33, 150, 243;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .column-letters {
   display: flex;
-  margin-left: 30px; // Отступ для цифр слева
+  margin-left: 35px;
   margin-bottom: 5px;
 
   .coordinate {
-    width: 30px;
+    width: 31px;
+    height: 30px;
     text-align: center;
     font-weight: bold;
+    line-height: 30px;
   }
 }
 
@@ -191,7 +193,8 @@ const getCellClass = (cell: CellState, x: number, y: number): string => {
   margin-right: 5px;
 
   .coordinate {
-    height: 30px;
+    width: 30px;
+    height: 31px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -213,6 +216,8 @@ const getCellClass = (cell: CellState, x: number, y: number): string => {
 }
 
 .cell {
+  width: 30px;
+  height: 30px;
   background-color: #eee;
   display: flex;
   align-items: center;
@@ -226,6 +231,7 @@ const getCellClass = (cell: CellState, x: number, y: number): string => {
 
   &.hit {
     background-color: #f00;
+
     span {
       color: white;
       font-size: 18px;
@@ -234,6 +240,7 @@ const getCellClass = (cell: CellState, x: number, y: number): string => {
 
   &.sunk {
     background-color: #900;
+
     span {
       color: white;
       font-size: 18px;
@@ -243,6 +250,7 @@ const getCellClass = (cell: CellState, x: number, y: number): string => {
 
   &.miss {
     background-color: #aaa;
+
     span {
       color: #333;
       font-size: 20px;
@@ -262,4 +270,5 @@ const getCellClass = (cell: CellState, x: number, y: number): string => {
     background-color: rgba(255, 0, 0, 0.5);
   }
 }
+
 </style>

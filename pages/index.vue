@@ -28,6 +28,15 @@
     <div v-else-if="gamePhase === 'battle'" class="battle-phase">
       <div class="boards-container">
 
+        <div class="opponent-ships" v-if="gamePhase === 'battle'">
+          <h3>Оставшиеся корабли противника:</h3>
+          <ul>
+            <li v-for="ship in getRemainingEnemyShips" :key="ship.id">
+              {{ ship.name }}: {{ ship.remaining }} из {{ ship.count }}
+            </li>
+          </ul>
+        </div>
+
         <GameBoard
             :board="inactivePlayer.id === 1 ? player1Board : player2Board"
             :board-size="BOARD_SIZE"
@@ -54,10 +63,11 @@
             :is-vertical="false"
         />
 
+
       </div>
 
       <div v-if="showEndTurn">
-      <button class="" @click="endTurn">Завершить ход</button>
+        <button class="" @click="endTurn">Завершить ход</button>
       </div>
     </div>
 
@@ -78,7 +88,6 @@
 </template>
 
 <script lang="ts" setup>
-import SetupPhase from '@/components/SetupPhase.vue';
 import useGame from '@/composables/useGame';
 
 const {
@@ -101,6 +110,7 @@ const {
   showEndTurn,
   isBoardLocked,
   showHitNotification,
+  getRemainingEnemyShips,
 
   // Игроки
   activePlayer,
@@ -118,6 +128,8 @@ const {
   closeTurnPopup,
   endTurn
 } = useGame();
+
+
 
 // Обработка клика по клетке в фазе расстановки
 const handleSetupClick = ({ x, y }: { x: number, y: number }) => {
@@ -184,6 +196,38 @@ onBeforeUnmount(() => {
 
 * {
   font-family: 'Lora', sans-serif;
+}
+
+.opponent-ships {
+  margin-top: 20px;
+  text-align: center;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  background: #f8f8f8;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+  h3 {
+    margin-bottom: 10px;
+    color: #333;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      background: #fff;
+      padding: 8px 12px;
+      margin-bottom: 8px;
+      border-radius: 4px;
+      border-left: 3px solid #f44336;
+      font-size: 14px;
+    }
+  }
 }
 
 .game-container {
@@ -257,4 +301,29 @@ input[type="color"] {
   z-index: 100;
   animation: fade 2s;
 }
+
+.opponent-ships {
+  margin-top: 20px;
+  text-align: left;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+
+  h3 {
+    margin-bottom: 10px;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+
+    li {
+      background: #f0f0f0;
+      padding: 6px 12px;
+      margin-bottom: 6px;
+      border-radius: 5px;
+    }
+  }
+}
+
 </style>
